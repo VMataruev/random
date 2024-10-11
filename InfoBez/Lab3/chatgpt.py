@@ -1,11 +1,8 @@
-# Фулл рабочий код, сделанный через ChatGPT
-# !!! Нет зеркальности у третьего ротора !!!
-
 class Enigma:
     user_message_array = []
     key = []
 
-    # Переделываем данные пользователя в 2 массива с сообщением и ключем
+    # Переделываем данные пользователя в 2 массива с сообщением и ключом
     @staticmethod
     def make_arrays(user_message, key):
         Enigma.user_message_array = list(user_message)
@@ -15,8 +12,10 @@ class Enigma:
         alphabet = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я']
         turnDelay = len(alphabet)
 
-        def __init__(self, key):
-            self.startFrom = self.alphabet[-int(key):] + self.alphabet[:-int(key)]
+        def __init__(self, key_char):
+            # Ищем индекс буквы в алфавите и устанавливаем начальную позицию ротора
+            key_index = self.alphabet.index(key_char)
+            self.startFrom = self.alphabet[-key_index:] + self.alphabet[:-key_index]
             self.turn_counter = 0  # Счётчик оборотов для ротора
         
         def turn(self):
@@ -77,10 +76,14 @@ class Menu:
 
         if user_choice == "1":
             user_message = input("Введите сообщение для шифрования: ").upper()
-            key = input("Введите ключ из 3 символов: ")
+            key = input("Введите ключ (3 буквы кириллицы): ").upper()
+            if len(key) != 3 or not all(c in Enigma.Rotor.alphabet for c in key):
+                print("Ошибка: ключ должен состоять из 3 букв кириллицы.")
+                return Menu.start()
+            
             Enigma.make_arrays(user_message, key)
             
-            # Инициализация роторов
+            # Инициализация роторов на основе ключа
             rotor_1 = Enigma.Rotor(Enigma.key[0])
             rotor_2 = Enigma.Rotor(Enigma.key[1])
             rotor_3 = Enigma.Rotor(Enigma.key[2])
@@ -91,10 +94,14 @@ class Menu:
 
         elif user_choice == "2":
             user_message = input("Введите зашифрованное сообщение: ").upper()
-            key = input("Введите ключ из 3 символов: ")
+            key = input("Введите ключ (3 буквы кириллицы): ").upper()
+            if len(key) != 3 or not all(c in Enigma.Rotor.alphabet for c in key):
+                print("Ошибка: ключ должен состоять из 3 букв кириллицы.")
+                return Menu.start()
+
             Enigma.make_arrays(user_message, key)
             
-            # Инициализация роторов
+            # Инициализация роторов на основе ключа
             rotor_1 = Enigma.Rotor(Enigma.key[0])
             rotor_2 = Enigma.Rotor(Enigma.key[1])
             rotor_3 = Enigma.Rotor(Enigma.key[2])
