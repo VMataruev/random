@@ -59,9 +59,4 @@
 #         else:
 #             Menu.start()
 
-# Menu.start()
-
-
-
-
-
+Menu.start()
